@@ -30,10 +30,11 @@ const (
 )
 
 var (
-	thingList  = [n]things.Thing{}
-	channel    = things.Channel{Name: "test"}
-	thsExtID   = []things.Thing{{ID: prefix + "000000000001", Name: "a"}, {ID: prefix + "000000000002", Name: "b"}}
-	chsExtID   = []things.Channel{{ID: prefix + "000000000001", Name: "a"}, {ID: prefix + "000000000002", Name: "b"}}
+	thing     = things.Thing{Name: "test"}
+	thingList = [n]things.Thing{}
+	channel   = things.Channel{Name: "test"}
+	thsExtID  = []things.Thing{{ID: prefix + "000000000001", Name: "a"}, {ID: prefix + "000000000002", Name: "b"}}
+	chsExtID  = []things.Channel{{ID: prefix + "000000000001", Name: "a"}, {ID: prefix + "000000000002", Name: "b"}}
 )
 
 func newService(tokens map[string]string) things.Service {
@@ -53,9 +54,9 @@ func newService(tokens map[string]string) things.Service {
 
 func TestInit(t *testing.T) {
 	for i := uint64(0); i < n; i++ {
-		thingList[i].Name = fmt.Sprintf("name-%d", i + 1)
-		thingList[i].ID = fmt.Sprintf("%s%012d", prefix, i + 1)
-		thingList[i].Key = fmt.Sprintf("%s1%011d", prefix, i + 1)
+		thingList[i].Name = fmt.Sprintf("name-%d", i+1)
+		thingList[i].ID = fmt.Sprintf("%s%012d", prefix, i+1)
+		thingList[i].Key = fmt.Sprintf("%s1%011d", prefix, i+1)
 	}
 }
 
@@ -142,7 +143,7 @@ func TestUpdateThing(t *testing.T) {
 func TestUpdateKey(t *testing.T) {
 	key := "new-key"
 	svc := newService(map[string]string{token: email})
-	ths, err := svc.CreateThings(context.Background(), token, thingList[0])
+	ths, err := svc.CreateThings(context.Background(), token, thing)
 	require.Nil(t, err, fmt.Sprintf("unexpected error: %s\n", err))
 	th := ths[0]
 
@@ -184,7 +185,7 @@ func TestUpdateKey(t *testing.T) {
 
 func TestShareThing(t *testing.T) {
 	svc := newService(map[string]string{token: email, token2: email2})
-	ths, err := svc.CreateThings(context.Background(), token, thing)
+	ths, err := svc.CreateThings(context.Background(), token, thingList[0])
 	require.Nil(t, err, fmt.Sprintf("unexpected error: %s\n", err))
 	th := ths[0]
 	policies := []string{"read"}
@@ -640,16 +641,16 @@ func TestCreateChannels(t *testing.T) {
 			err:      things.ErrUnauthorizedAccess,
 		},
 		{
-			desc:   "create new channels with external UUID",
+			desc:     "create new channels with external UUID",
 			channels: chsExtID,
-			token:  token,
-			err:    nil,
+			token:    token,
+			err:      nil,
 		},
 		{
-			desc:   "create new channels with external wrong UUID",
+			desc:     "create new channels with invalid external UUID",
 			channels: []things.Channel{{ID: "b0aa-000000000001", Name: "a"}, {ID: "b0aa-000000000002", Name: "b"}},
-			token:  token,
-			err:    nil,
+			token:    token,
+			err:      nil,
 		},
 	}
 

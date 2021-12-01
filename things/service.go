@@ -192,6 +192,7 @@ func (ts *thingsService) CreateThings(ctx context.Context, token string, things 
 	ths := []Thing{}
 	for _, thing := range things {
 		th, err := ts.createThing(ctx, &thing, res)
+
 		if err != nil {
 			return []Thing{}, err
 		}
@@ -209,6 +210,14 @@ func (ts *thingsService) createThing(ctx context.Context, thing *Thing, identity
 	}
 	thing.ID = thID
 	thing.Owner = identity.GetEmail()
+
+	if thing.ID == "" {
+		id, err := ts.idProvider.ID()
+		if err != nil {
+			return Thing{}, errors.Wrap(ErrCreateUUID, err)
+		}
+		thing.ID = id
+	}
 
 	if thing.Key == "" {
 		thing.Key, err = ts.idProvider.ID()

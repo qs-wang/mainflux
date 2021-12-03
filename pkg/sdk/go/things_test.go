@@ -133,13 +133,13 @@ func TestCreateThings(t *testing.T) {
 		th1,
 		th2,
 	}
-	thsExtID := []sdk.Thing {
-		sdk.Thing{ID: th1.ID, Name: "1", Key: "1", Metadata:metadata},
-		sdk.Thing{ID: th2.ID, Name: "2", Key: "2", Metadata:metadata},
+	thsExtID := []sdk.Thing{
+		{ID: th1.ID, Name: "1", Key: "1", Metadata: metadata},
+		{ID: th2.ID, Name: "2", Key: "2", Metadata: metadata},
 	}
-	thsWrongExtID := []sdk.Thing {
-		sdk.Thing{ID: "b0aa-000000000001", Name: "1", Key: "1", Metadata:metadata},
-		sdk.Thing{ID: "b0aa-000000000002", Name: "2", Key: "2", Metadata:metadata2},
+	thsWrongExtID := []sdk.Thing{
+		{ID: "b0aa-000000000001", Name: "1", Key: "1", Metadata: metadata},
+		{ID: "b0aa-000000000002", Name: "2", Key: "2", Metadata: metadata2},
 	}
 
 	cases := []struct {
@@ -188,7 +188,7 @@ func TestCreateThings(t *testing.T) {
 			desc:   "create new things with wrong external UUID",
 			things: thsWrongExtID,
 			token:  token,
-			err:     createError(sdk.ErrFailedCreation, http.StatusBadRequest),
+			err:    createError(sdk.ErrFailedCreation, http.StatusBadRequest),
 			res:    []sdk.Thing{},
 		},
 	}

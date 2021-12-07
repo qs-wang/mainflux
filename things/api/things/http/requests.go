@@ -29,7 +29,6 @@ type createThingReq struct {
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
 }
 
-// validateUUID: validates the externally supplied UUID as per standard
 func validateUUID(extID string) (err error) {
 	id, err := uuid.FromString(extID)
 	if id.String() != extID || err != nil {

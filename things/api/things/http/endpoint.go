@@ -265,7 +265,11 @@ func createChannelEndpoint(svc things.Service) endpoint.Endpoint {
 			return nil, err
 		}
 
-		ch := things.Channel{Name: req.Name, ID: req.ID, Metadata: req.Metadata}
+		ch := things.Channel{
+			Name:     req.Name,
+			ID:       req.ID,
+			Metadata: req.Metadata}
+
 		saved, err := svc.CreateChannels(ctx, req.token, ch)
 		if err != nil {
 			return nil, err
